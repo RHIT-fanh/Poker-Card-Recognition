@@ -1,26 +1,33 @@
-clear; close all;
+clear; 
+% close all;
 
-img_rgb = imread('2C10.jpg');
-% img_rgb = imread('2.png');
+% img_rgb = imread('2C10.jpg');
+img_rgb = imread('000554394_jpg.rf.8be18f32226fb0d2208dddd4349077ba_04_cls6.jpg');
 
 %% extractROI
 gray  = rgb2gray(img_rgb);
-blur  = imgaussfilt(gray,1);
-bin   = ~imbinarize(blur,150/255);      % white as foreground, black as background
-clean = bwareaopen(bin,300);
+blur  = imgaussfilt(gray, 1);
+level = graythresh(blur);           % 自动阈值 [0,1]
+bin   = ~imbinarize(blur, level);   % 白色为前景
 
-stats = regionprops(clean,'BoundingBox','Area','Image');
-valid_stats = stats([stats.Area] > 2000 & [stats.Area] < 16000);
+figure; imshow(bin);
+
+stats = regionprops(bin,'BoundingBox','Area','Image');
+valid_stats = stats([stats.Area] > 1 & [stats.Area] < 16000);
 fprintf('Detected %d candidate ROIs\n', numel(valid_stats));
 
 %% get the templates
-tmp_dir  = 'D:\OneDrive - Rose-Hulman Institute of Technology\Rose-Hulman\course\CSSE\CSSE463\final project\template';
+tmp_dir  = 'D:\OneDrive - Rose-Hulman Institute of Technology\Rose-Hulman\course\CSSE\CSSE463\final project\try\template';
 tmp_files= dir(fullfile(tmp_dir,'*_hu.mat'));
 
 %% caluculate the distanse with template
 labels = cell(1,numel(valid_stats));
 for k = 1:numel(valid_stats)
-    roi  = valid_stats(k).Image;
+    roi  = valid_stats(k).Image;   % 提取二值 ROI 图像
+
+    % 显示这个 ROI 的二值图
+    figure; imshow(roi); title(sprintf('ROI %d - Binary Region', k));
+
     hu   = computeHuMoments(roi);
     logH = -sign(hu).*log10(abs(hu)+eps);
     fprintf('ROI %d  Hu:\n'); disp(hu);
@@ -32,11 +39,14 @@ for k = 1:numel(valid_stats)
         dist = norm(logH-vv);
         if dist<best_d, best_d=dist; best=erase(tmp_files(f).name,'_hu.mat'); end
     end
-    labels{k}=best; fprintf('ROI %d → %s (%.4f)\n\n',k,best,best_d);
+    labels{k}=best;
+    fprintf('ROI %d → %s (%.4f)\n\n', k, best, best_d);
 end
 
 
+
  % show the bouding box and classification result
+ figure;
 imshow(img_rgb); title('Recognition Result'); hold on;
 for k = 1:numel(valid_stats) 
     rectangle('Position',valid_stats(k).BoundingBox,'EdgeColor','r','LineWidth',2);

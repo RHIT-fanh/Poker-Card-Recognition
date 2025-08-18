@@ -1,7 +1,7 @@
 clear;
 close all;
 
-img_path = 'diamond_flipped.png';                      % 输入图像路径
+img_path = 'A_flipped.png';                      % 输入图像路径
 [~, base, ~] = fileparts(img_path);              % 文件名（无扩展名）
 
 img_rgb = imread(img_path);                      % 读取图像

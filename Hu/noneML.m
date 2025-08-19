@@ -1,31 +1,33 @@
 clear; 
-% close all;
+close all;
 
-% img_rgb = imread('2C10.jpg');
-img_rgb = imread('000554394_jpg.rf.8be18f32226fb0d2208dddd4349077ba_04_cls6.jpg');
+img_rgb = imread('2S12.jpg');
+% img_rgb = imread('000554394_jpg.rf.8be18f32226fb0d2208dddd4349077ba_04_cls6.jpg');
 
 %% extractROI
 gray  = rgb2gray(img_rgb);
 blur  = imgaussfilt(gray, 1);
-level = graythresh(blur);           % 自动阈值 [0,1]
-bin   = ~imbinarize(blur, level);   % 白色为前景
+level = graythresh(blur);           
+bin   = ~imbinarize(blur, level);  
 
 figure; imshow(bin);
 
 stats = regionprops(bin,'BoundingBox','Area','Image');
-valid_stats = stats([stats.Area] > 1 & [stats.Area] < 16000);
+valid_stats = stats([stats.Area] > 1000 & [stats.Area] < 16000);
 fprintf('Detected %d candidate ROIs\n', numel(valid_stats));
 
+
+
 %% get the templates
-tmp_dir  = 'D:\OneDrive - Rose-Hulman Institute of Technology\Rose-Hulman\course\CSSE\CSSE463\final project\try\template';
+tmp_dir  = 'D:\OneDrive - Rose-Hulman Institute of Technology\Rose-Hulman\course\CSSE\CSSE463\final project\git_latest\Hu\template';
 tmp_files= dir(fullfile(tmp_dir,'*_hu.mat'));
 
 %% caluculate the distanse with template
 labels = cell(1,numel(valid_stats));
 for k = 1:numel(valid_stats)
-    roi  = valid_stats(k).Image;   % 提取二值 ROI 图像
+    roi  = valid_stats(k).Image;  
 
-    % 显示这个 ROI 的二值图
+    % show the binarization of the roi
     figure; imshow(roi); title(sprintf('ROI %d - Binary Region', k));
 
     hu   = computeHuMoments(roi);

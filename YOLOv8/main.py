@@ -46,7 +46,7 @@ def load_model(model_name):
 def get_available_models():
     """Get the list of available models"""
     available_models = []
-    model_folders = ["Model-35e", "Model-50e", "Model-65e"]
+    model_folders = ["Model-35e", "Model-50e", "Model-65e", "Model_65e_whole"]
     
     for folder in model_folders:
         model_path = os.path.join(".", folder, "weights", "best.pt")
@@ -139,7 +139,8 @@ def main():
     model_display_names = {
         "Model-35e": "35 Epochs Training Model (Model-35e)", 
         "Model-50e": "50 Epochs Training Model (Model-50e)",
-        "Model-65e": "65 Epochs Training Model (Model-65e)"
+        "Model-65e": "65 Epochs Training Model (Model-65e)",
+        "Model_65e_whole": "Model-65e whole card"
     }
     
     selected_model = st.sidebar.selectbox(
@@ -264,7 +265,8 @@ def main():
             model_info = {
                 "Model-35e": "35 Epochs Training - Quick Training Version",
                 "Model-50e": "50 Epochs Training - Balanced Version", 
-                "Model-65e": "65 Epochs Training - High Precision Version"
+                "Model-65e": "65 Epochs Training - High Precision Version",
+                "Model_65e_whole": "65 Epochs Training - Whole Card Detection Version"
             }
             if selected_model in model_info:
                 st.write(f"- **Model Description**: {model_info[selected_model]}")

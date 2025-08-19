@@ -2,10 +2,11 @@ from ultralytics import YOLO
 import cv2 
 import os 
 
-imgTest = r"D:\OneDrive - Rose-Hulman Institute of Technology\Rose-Hulman\course\CSSE\CSSE463\final project\git_latest\YOLOv8_3\poker cards.v4i.yolov8\test\images\IMG_20220316_171936_jpg.rf.b6e31b1cc6b5e14dc66462becfa4a63d.jpg"
-# imgTest = r"D:\OneDrive - Rose-Hulman Institute of Technology\Rose-Hulman\course\CSSE\CSSE463\final project\git_latest\YOLOv8\dataset\test\images\550253173_jpg.rf.a4c632c590f9da6d1f4cd134d30a186e.jpg"
+# imgTest = r"D:\OneDrive - Rose-Hulman Institute of Technology\Rose-Hulman\course\CSSE\CSSE463\final project\git_latest\YOLOv8_3\poker cards.v4i.yolov8\test\images\IMG_20220316_171936_jpg.rf.b6e31b1cc6b5e14dc66462becfa4a63d.jpg"
+# imgTest = r"D:\OneDrive - Rose-Hulman Institute of Technology\Rose-Hulman\course\CSSE\CSSE463\final project\git_latest\YOLOv8_2\dataset\test\images\7346_three_card_poker_class_level.png"
+# imgTest = r"D:\OneDrive - Rose-Hulman Institute of Technology\Rose-Hulman\course\CSSE\CSSE463\final project\git_latest\YOLOv8\dataset\test\images\596131312_jpg.rf.3f88c1789ff78e4bdeccc7a1d5baf579.jpg"
 # imgTest = r"D:\OneDrive - Rose-Hulman Institute of Technology\Rose-Hulman\course\CSSE\CSSE463\final project\git_latest\Hu\dataset\Images\Images\2H11.jpg"
-# imgTest = r"C:\Users\PC\Desktop\临时文件\testing.jpg"
+imgTest = r"C:\Users\PC\Desktop\临时文件\testing.jpg"
 
 
 img = cv2.imread(imgTest)
@@ -13,14 +14,15 @@ H , W , _ = img.shape
 
 # predict 
 imgpredict = img.copy()
-imgpredict = cv2.resize(imgpredict, (640, 480))
-# model_path = r"D:\OneDrive - Rose-Hulman Institute of Technology\Rose-Hulman\course\CSSE\CSSE463\final project\git_latest\YOLOv8_3\Models\Model_65_epoch\weights\best.pt"
-model_path = r"D:\OneDrive - Rose-Hulman Institute of Technology\Rose-Hulman\course\CSSE\CSSE463\final project\git_latest\YOLOv8\Model-65e\weights\best.pt"
+# imgpredict = cv2.resize(imgpredict, (640, 480))
+model_path = r"D:\OneDrive - Rose-Hulman Institute of Technology\Rose-Hulman\course\CSSE\CSSE463\final project\git_latest\YOLOv8_3\Models\Model_65_epoch\weights\best.pt"
+# model_path = r"D:\OneDrive - Rose-Hulman Institute of Technology\Rose-Hulman\course\CSSE\CSSE463\final project\git_latest\YOLOv8\Model-65e\weights\best.pt"
+# model_path = r"D:\OneDrive - Rose-Hulman Institute of Technology\Rose-Hulman\course\CSSE\CSSE463\final project\git_latest\YOLOv8_2\Models\Model_35_epoch\weights\best.pt"
 
 
 # load the model 
 model = YOLO(model_path)
-threshold = 0.3 
+threshold = 0.1 
 
 results = model(imgpredict)[0]
 
